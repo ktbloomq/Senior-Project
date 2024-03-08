@@ -1,22 +1,21 @@
-import express, { RequestHandler, Request, Response } from 'express';
+import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import helmet from 'helmet';
-import { execute } from './services/mysql.connector';
+import { userRouter } from './users/user.routes';
 
 dotenv.config();
 const app: express.Application = express();
 const port = process.env.PORT;
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 app.use(cors());
 app.use(helmet());
 
-let getUsers:RequestHandler = async function(req: Request, res: Response) {
-  let users = await execute("SELECT * FROM  users",[]);
-  res.status(200).json(users);
-}
+// Routers
+app.use('/api/users',userRouter);
 
-app.get('/', getUsers);
 
 app.listen(port, () => {
-  console.log(`Running on port ${port}`);
+    console.log(`Running on port ${port}`);
 });
