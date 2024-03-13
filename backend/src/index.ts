@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import helmet from 'helmet';
 import { userRouter } from './users/user.routes';
+import { postRouter } from './posts/post.routes';
 
 dotenv.config();
 const app: express.Application = express();
@@ -14,7 +15,7 @@ app.use(helmet());
 
 // Routers
 app.use('/api/users',userRouter);
-
+app.use('/api/posts',postRouter);
 
 app.listen(port, () => {
     console.log(`Running on port ${port}`);

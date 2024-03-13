@@ -1,5 +1,5 @@
 import { Router } from "express";
-import * as UserDAO from "./user.dao"
+import * as UserDAO from "./user.dao";
 import { OkPacket } from "mysql";
 
 export const userRouter = Router();
