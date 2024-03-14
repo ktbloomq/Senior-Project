@@ -1,6 +1,6 @@
 import { execute } from "../services/mysql.connector";
 import { userQueries } from "./user.queries";
-import User from "./user.model";
+import User from "../../../types/user.model";
 import { OkPacket } from "mysql";
 
 export async function getAllUsers() {

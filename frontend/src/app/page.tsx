@@ -1,12 +1,21 @@
-import Post from "./post";
+import PostComponent from "./postComponent";
+import Post from "../../../types/post.model";
 
-export default function Home() {
+async function getPosts() {
+  const response = await fetch("http://localhost:5000/api/posts/all", {cache: "no-cache"});
+  const data = await response.json();
+  return data as Post[];
+}
+
+export default async function Home() {
+  const posts:Post[] = await getPosts();
   return (
     <div className="container">
       <h1 className="text-center">Travel Journal Feed</h1>
       <hr />
-      <Post />
-      <Post />
+      {posts.map((p: Post,index) => {
+        return <PostComponent key={index} post={p} />
+      })}
     </div>
   );
 }
