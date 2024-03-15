@@ -2,7 +2,7 @@ import PostComponent from "./postComponent";
 import Post from "../../../types/post.model";
 
 async function getPosts() {
-  const response = await fetch("http://localhost:5000/api/posts/all", {cache: "no-cache"});
+  const response = await fetch(`http://${process.env.API_HOST}:5000/api/posts/all`, {cache: "no-cache"});
   const data = await response.json();
   return data as Post[];
 }
