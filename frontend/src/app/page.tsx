@@ -2,8 +2,15 @@ import PostComponent from "./postComponent";
 import Post from "../../../types/post.model";
 
 async function getPosts() {
+  let data;
+  // try {
+  //   const response = await fetch(`http://${process.env.API_HOST}:5000/api/posts/all`, {cache: "no-cache"});
+  //   data = await response.json();
+  // } catch (error) {
+  //   console.error(`could not fetch http://${process.env.API_HOST}:5000/api/posts/all`);
+  // }
   const response = await fetch(`http://${process.env.API_HOST}:5000/api/posts/all`, {cache: "no-cache"});
-  const data = await response.json();
+  data = await response.json();
   return data as Post[];
 }
 
@@ -13,9 +20,11 @@ export default async function Home() {
     <div className="container">
       <h1 className="text-center">Travel Journal Feed</h1>
       <hr />
-      {posts.map((p: Post,index) => {
-        return <PostComponent key={index} post={p} />
-      })}
+      <main>
+        {posts.map((p: Post,index) => {
+          return <PostComponent key={index} post={p} />
+        })}
+      </main>
     </div>
   );
 }

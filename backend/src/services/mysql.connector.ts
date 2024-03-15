@@ -1,7 +1,7 @@
 import { createPool, Pool } from "mysql";
 export let pool: Pool | null = null;
 
-function initializeMySqlConnector() {
+export function initializeMySqlConnector() {
     try {
         pool = createPool({
             connectionLimit:
@@ -33,10 +33,6 @@ function initializeMySqlConnector() {
 
 export function execute <T>(query: string, params: string[] | Object): Promise<T> {
     try {
-        if(!pool) {
-            initializeMySqlConnector();
-        }
-
         return new Promise<T>((resolve, reject) => {
             pool!.query(query, params, (error, results) => {
                 if(error) reject(error);
