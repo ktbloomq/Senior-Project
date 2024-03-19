@@ -17,7 +17,7 @@ async function getPosts() {
 export default async function Home() {
   const posts:Post[] = await getPosts();
   return (
-    <div className="container">
+    <>
       <h1 className="text-center">Travel Journal Feed</h1>
       <hr />
       <main>
@@ -25,6 +25,6 @@ export default async function Home() {
           return <PostComponent key={index} post={p} />
         })}
       </main>
-    </div>
+    </>
   );
 }

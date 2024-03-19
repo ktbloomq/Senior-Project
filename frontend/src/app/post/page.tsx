@@ -8,7 +8,7 @@ export default function Post() {
     const dummyImage = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
     const [previewImg, setPreviewImg] = useState("data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=");
     return(
-        <div className="container">
+        <>
             <h1 className="text-center">Create Post</h1>
             <hr />
             <div className="card mb-2">
@@ -37,6 +37,6 @@ export default function Post() {
                     </form>
                 </div>
             </div>
-        </div>
+        </>
     );
 }

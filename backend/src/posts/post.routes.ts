@@ -44,4 +44,16 @@ postRouter.post('/', async (req, res) => {
             message: 'There was an error creating post'
         });
     }
-})
+});
+
+postRouter.get('/like/:postid', async (req, res) => {
+    let postid = Number(req.params.postid);
+    if(Number.isInteger(postid) && postid >= 0) {
+        let okPacket = await PostDAO.likePost(postid);
+        res.status(200).json(okPacket);
+    } else {
+        res.status(400).json({
+            message: 'positive integer expected for postid'
+        });
+    }
+});

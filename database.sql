@@ -15,7 +15,7 @@ CREATE TABLE `posts` (
   `parent` int(11) DEFAULT NULL,
   `body` varchar(1000) NOT NULL,
   `location` varchar(1000) DEFAULT NULL,
-  `image_url` varchar(1000) NOT NULL,
+  `image_url` varchar(1000) DEFAULT NULL,
   `likes` int(11) DEFAULT 0 NOT NULL,
   PRIMARY KEY (`postid`),
   KEY `posts_posts_FK` (`parent`),

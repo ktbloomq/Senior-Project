@@ -18,3 +18,7 @@ export async function getPostByUserId(postid: number) {
 export async function createPost(post: Post) {
     return execute<OkPacket>(postQueries.createPost, [post.userid, post.parent, post.body, post.location, post.image_url, 0]);
 }
+
+export async function likePost(postid: number) {
+    return execute<OkPacket>(postQueries.likePost, [postid]);
+}

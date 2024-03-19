@@ -26,7 +26,9 @@ export default function RootLayout({
               </div>
             </div>
           </nav>
-          {children}
+          <div className="container">
+            {children}
+          </div>
         </main>
       </body>
     </html>

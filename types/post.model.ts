@@ -5,6 +5,6 @@ export default interface Post {
     parent: number | null,
     body: string,
     location: string | null,
-    image_url: string,
+    image_url: string | null,
     likes: number
 }
