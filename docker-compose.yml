@@ -8,10 +8,12 @@ services:
         ports:
             - "3306:3306"
         volumes:
-            - ./database.sql:/docker-entrypoint-initdb.d/database.sql
-            - db_data:/var/lib/mysql
+            - ./database/:/docker-entrypoint-initdb.d/
+            # - db_data:/var/lib/mysql
     express:
         image: node:latest
+        depends_on:
+            - mysql
         working_dir: /home/node/app/backend
         environment:
             - MY_SQL_DB_HOST=mysql
@@ -25,6 +27,8 @@ services:
         command: "npm run dev"
     next:
         image: node:latest
+        depends_on:
+            - express
         working_dir: /home/node/app/frontend
         environment:
             - API_HOST=express

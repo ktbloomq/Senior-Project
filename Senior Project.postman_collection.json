@@ -1,0 +1,512 @@
+{
+	"info": {
+		"_postman_id": "28762f6e-c787-442b-b3bb-c72aaa280884",
+		"name": "Senior Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29282444"
+	},
+	"item": [
+		{
+			"name": "all users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseData = pm.response.json();",
+							"",
+							"pm.test(\"Response Content-Type is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response is an array with at least one element\", function () {",
+							"  pm.expect(responseData).to.be.an('array').that.is.not.empty;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Userid is a non-negative integer\", function () {",
+							"    responseData.forEach(function(user) {",
+							"        pm.expect(user.userid).to.be.a('number').and.to.be.at.least(0);",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Username is a non-empty string\", function () {",
+							"  pm.expect(responseData).to.be.an('array');",
+							"  responseData.forEach(function(user) {",
+							"    pm.expect(user.username).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Username should not be empty\");",
+							"  });",
+							"});",
+							"",
+							"pm.test(\"Password is a non-empty string\", function () {",
+							"  responseData.forEach(function(user) {",
+							"    pm.expect(user.password).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Password should not be empty\");",
+							"  });",
+							"});",
+							"",
+							"pm.test(\"First element in the response array matches the expected data\", function () {",
+							"    const expectedData = {",
+							"        \"userid\": 1,",
+							"        \"username\": \"ttowersey0\",",
+							"        \"password\": \"oX6|qY(Qs&dRS\"",
+							"    };",
+							"    pm.expect(pm.response.json()[0]).to.eql(expectedData);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/users/all",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseData = pm.response.json();",
+							"const requestBody = JSON.parse(pm.request.body.raw);",
+							"console.log(requestBody);",
+							"pm.collectionVariables.set(\"insertUserId\", responseData.insertId);",
+							"pm.collectionVariables.set(\"newuser\", requestBody);",
+							"",
+							"pm.test(\"Response Content-Type is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"pm.test(\"affected 1 row\", function () {",
+							"    pm.expect(responseData.affectedRows).to.eql(1);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"{{$randomUserName}}\",\n    \"password\": \"{{$randomPassword}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/users/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseData = pm.response.json();",
+							"",
+							"pm.test(\"Response Content-Type is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"pm.test(\"Response has the required fields - userid, username, and password\", function () {",
+							"  pm.expect(responseData).to.be.an('array').that.is.not.empty;",
+							"  ",
+							"  responseData.forEach(function(user) {",
+							"    pm.expect(user.userid).to.exist;",
+							"    pm.expect(user.username).to.exist;",
+							"    pm.expect(user.password).to.exist;",
+							"  });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Userid matches requested\", function () {",
+							"    // console.log(\"expected\", pm.collectionVariables.get(\"insertId\"));",
+							"    // console.log(\"recieved\", responseData[0].userid);",
+							"    pm.expect(responseData[0].userid).to.eql(pm.collectionVariables.get(\"insertUserId\"));",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"pm.test(\"user matches expected\", function() {",
+							"    const expectedData = pm.collectionVariables.get(\"newuser\");",
+							"    pm.expect(responseData[0].username).to.eql(expectedData.username);",
+							"    pm.expect(responseData[0].password).to.eql(expectedData.password);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/users/:userid",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"users",
+						":userid"
+					],
+					"variable": [
+						{
+							"key": "userid",
+							"value": "{{insertUserId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "all posts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseData = pm.response.json();",
+							"",
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response Content-Type is application/json\", function () {",
+							"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Parent field is either null or a valid postid\", function () {",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach(post => {",
+							"        pm.expect(post.parent).to.satisfy(val => val === null || Number.isInteger(val), \"Parent field should be null or a valid postid\");",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Likes field is a non-negative integer\", function () {",
+							"  responseData.forEach(function(post) {",
+							"    pm.expect(post.likes).to.be.a('number').and.to.be.at.least(0);",
+							"  });",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/posts/all",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"posts",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseData = pm.response.json();",
+							"const requestBody = JSON.parse(pm.request.body.raw);",
+							"console.log(requestBody);",
+							"pm.collectionVariables.set(\"insertPostId\", responseData.insertId);",
+							"pm.collectionVariables.set(\"newPost\", requestBody);",
+							"",
+							"pm.test(\"Response Content-Type is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"pm.test(\"affected 1 row\", function () {",
+							"    pm.expect(responseData.affectedRows).to.eql(1);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userid\": 1,\n    \"body\": \"{{$randomLoremSentence}}\",\n    \"location\": \"{{$randomCity}}\",\n    \"image_url\": \"{{$randomImageUrl}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/posts/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"posts",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseData = pm.response.json();",
+							"",
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response Content-Type is application/json\", function () {",
+							"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"pm.test(\"Postid matches requested\", function () {",
+							"    // console.log(\"expected\", pm.collectionVariables.get(\"insertId\"));",
+							"    // console.log(\"recieved\", responseData[0].userid);",
+							"    pm.expect(responseData[0].postid).to.eql(pm.collectionVariables.get(\"insertPostId\"));",
+							"});",
+							"",
+							"pm.test(\"post matches expected\", function() {",
+							"    const expectedData = pm.collectionVariables.get(\"newPost\");",
+							"    pm.expect(responseData[0].userid).to.eql(expectedData.userid);",
+							"    pm.expect(responseData[0].body).to.eql(expectedData.body);",
+							"    pm.expect(responseData[0].location).to.eql(expectedData.location);",
+							"    pm.expect(responseData[0].image_url).to.eql(expectedData.image_url);",
+							"    pm.expect(responseData[0].likes).to.eql(0);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/posts/:postid",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"posts",
+						":postid"
+					],
+					"variable": [
+						{
+							"key": "postid",
+							"value": "{{insertPostId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "like post",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseData = pm.response.json();",
+							"",
+							"pm.test(\"changed 1 row\", function() {",
+							"    pm.expect(responseData.affectedRows).to.eql(1);",
+							"    pm.expect(responseData.changedRows).to.eql(1);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/posts/like/:postid",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"posts",
+						"like",
+						":postid"
+					],
+					"variable": [
+						{
+							"key": "postid",
+							"value": "{{insertPostId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "check like increment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseData = pm.response.json();",
+							"",
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response Content-Type is application/json\", function () {",
+							"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"pm.test(\"Postid matches requested\", function () {",
+							"    // console.log(\"expected\", pm.collectionVariables.get(\"insertId\"));",
+							"    // console.log(\"recieved\", responseData[0].userid);",
+							"    pm.expect(responseData[0].postid).to.eql(pm.collectionVariables.get(\"insertPostId\"));",
+							"});",
+							"",
+							"pm.test(\"post matches expected\", function() {",
+							"    const expectedData = pm.collectionVariables.get(\"newPost\");",
+							"    pm.expect(responseData[0].userid).to.eql(expectedData.userid);",
+							"    pm.expect(responseData[0].body).to.eql(expectedData.body);",
+							"    pm.expect(responseData[0].location).to.eql(expectedData.location);",
+							"    pm.expect(responseData[0].image_url).to.eql(expectedData.image_url);",
+							"    pm.expect(responseData[0].likes).to.eql(1);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/posts/:postid",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"posts",
+						":postid"
+					],
+					"variable": [
+						{
+							"key": "postid",
+							"value": "{{insertPostId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "localhost:5000"
+		},
+		{
+			"key": "insertUserId",
+			"value": ""
+		},
+		{
+			"key": "newuser",
+			"value": ""
+		},
+		{
+			"key": "insertPostId",
+			"value": ""
+		},
+		{
+			"key": "newPost",
+			"value": ""
+		}
+	]
+}
