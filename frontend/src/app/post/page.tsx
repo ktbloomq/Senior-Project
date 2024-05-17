@@ -1,12 +1,23 @@
 "use client";
 import { redirect } from "next/navigation";
 // import Post from "../../../../types/post.model";
-import { useState } from "react";
+import { getSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 import createPost from "./createPost";
+import { Session } from "inspector";
+
+
 
 export default function Post() {
     const dummyImage = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
     const [previewImg, setPreviewImg] = useState("data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=");
+    const [session,setSession] = useState<any>(null);
+    useEffect(() => {
+        getSession().then(result => {
+            setSession(result);
+        });
+    },[]);
+    
     return(
         <>
             <h1 className="text-center">Create Post</h1>

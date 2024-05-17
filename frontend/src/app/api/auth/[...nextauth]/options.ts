@@ -1,8 +1,7 @@
-// import type { NextAuthOptions } from "next-auth"
-// import type { CustomAuthOptions, CustomSession } from "./CustomAuthOptions";
+import type { CustomAuthOptions, CustomSession } from "./CustomAuthOptions";
 import Google from "next-auth/providers/google"
 
-export const authOptions = {
+export const authOptions:CustomAuthOptions = {
     // Configure one or more authentication providers
     providers: [
       Google({
@@ -10,18 +9,17 @@ export const authOptions = {
           clientSecret: process.env.GOOGLE_CLIENT_SECRET!
       })
     ],
-    // callbacks: {
-    //   async session({ session, token }) {
-    //     if (session?.user) {
-    //       session.user.id = token.uid;
-    //     }
-    //     return session;
-    //   },
-    //   async jwt({ token, user }) {
-    //     if (user) {
-    //       token.uid = user.id;
-    //     }
-    //     return token;
-    //   }
-    // }
+    callbacks: {
+      async session({ session, token}) {
+        let newSession:CustomSession = session
+        newSession.user!.id = token.sub;
+        return newSession
+      },
+      async jwt({ token, user }) {
+        if (user) {
+        }
+        return token;
+      }
+    },
+    secret: process.env.NEXTAUTH_SECRET
   }
