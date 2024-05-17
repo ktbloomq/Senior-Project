@@ -1,6 +1,6 @@
 "use client";
 import { redirect } from "next/navigation";
-import Post from "../../../../types/post.model";
+// import Post from "../../../../types/post.model";
 import { useState } from "react";
 import createPost from "./createPost";
 

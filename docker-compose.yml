@@ -8,8 +8,8 @@ services:
         ports:
             - "3306:3306"
         volumes:
-            - ./database/:/docker-entrypoint-initdb.d/
-            # - db_data:/var/lib/mysql
+            # - ./database/:/docker-entrypoint-initdb.d/
+            - db_data:/var/lib/mysql
     express:
         image: node:latest
         depends_on:
