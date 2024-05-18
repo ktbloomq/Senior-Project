@@ -12,7 +12,7 @@ export default function PostComponent({post}: {post:Post}) {
             <div className="card-body">
                 <h5 className="card-title d-flex align-items-end">
                     <div className="text-secondary fs-6 fst-italic">by {post.username}</div>
-                    <div className="ms-auto text-secondary fs-6">📍{post.location}
+                    <div className="ms-auto text-secondary fs-6">{post.location}📍
                     </div>
                 </h5>
                 <p className="card-text">{post.body}</p>
