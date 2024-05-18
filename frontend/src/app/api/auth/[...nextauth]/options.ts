@@ -17,6 +17,21 @@ export const authOptions:CustomAuthOptions = {
       },
       async jwt({ token, user }) {
         if (user) {
+          const checkIdResponse = await fetch(`http://${process.env.API_HOST}:5000/api/users/${user.id}`);
+          if(checkIdResponse.status===404) {
+            console.log("Creating user", user.id);
+            let userBody = {
+              id: user.id,
+              name: user.name
+            }
+            const createUserResponse = await fetch(`http://${process.env.API_HOST}:5000/api/users`,{
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              body: JSON.stringify(userBody)
+            });
+          }
         }
         return token;
       }

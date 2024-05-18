@@ -1,5 +1,5 @@
 export default interface User {
-    userid: number,
-    username: string,
-    password: string
+    id: number,
+    name: string,
+    image: string
 }

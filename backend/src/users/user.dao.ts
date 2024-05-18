@@ -8,9 +8,9 @@ export async function getAllUsers() {
 }
 
 export async function getUserById(userid: number) {
-    return execute<User>(userQueries.getUserById,[userid]);
+    return execute<User[]>(userQueries.getUserById,[userid]);
 }
 
 export async function createUser(user: User) {
-    return execute<OkPacket>(userQueries.createUser, [user.username, user.password]);
+    return execute<OkPacket>(userQueries.createUser, [user.id, user.name]);
 }
