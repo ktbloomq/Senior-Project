@@ -1,6 +1,9 @@
 import { faker } from '@faker-js/faker';
 
 describe('Navigation', () => {
+  beforeEach(() => {
+    cy.importSession();
+  });
   it('can create a post', () => {
     const location = faker.location.city();
     const image = faker.image.urlLoremFlickr({ category: 'scenery' });
@@ -26,6 +29,6 @@ describe('Navigation', () => {
   it('can reply to a post', () => {
     const description = faker.lorem.sentence();
     cy.visit('http://localhost:3000/');
-    cy.contains('a','/reply')//.should('have.attr', 'href').and('include', '/reply');
+    cy.contains('Reply')
   })
 });

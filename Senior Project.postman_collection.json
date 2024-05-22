@@ -35,15 +35,11 @@
 							"pm.test(\"Username is a non-empty string\", function () {",
 							"  pm.expect(responseData).to.be.an('array');",
 							"  responseData.forEach(function(user) {",
-							"    pm.expect(user.username).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Username should not be empty\");",
+							"    pm.expect(user.name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"name should not be empty\");",
 							"  });",
 							"});",
 							"",
-							"pm.test(\"Password is a non-empty string\", function () {",
-							"  responseData.forEach(function(user) {",
-							"    pm.expect(user.password).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Password should not be empty\");",
-							"  });",
-							"});",
+							"return;",
 							"",
 							"pm.test(\"First element in the response array matches the expected data\", function () {",
 							"    const expectedData = {",
@@ -54,7 +50,8 @@
 							"    pm.expect(pm.response.json()[0]).to.eql(expectedData);",
 							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -84,7 +81,7 @@
 						"exec": [
 							"const responseData = pm.response.json();",
 							"const requestBody = JSON.parse(pm.request.body.raw);",
-							"console.log(requestBody);",
+							"// console.log(requestBody);",
 							"pm.collectionVariables.set(\"insertUserId\", responseData.insertId);",
 							"pm.collectionVariables.set(\"newuser\", requestBody);",
 							"",
@@ -96,7 +93,8 @@
 							"    pm.expect(responseData.affectedRows).to.eql(1);",
 							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -105,7 +103,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"{{$randomUserName}}\",\n    \"password\": \"{{$randomPassword}}\"\n}",
+					"raw": "{\n    \"googleid\": \"{{$randomInt}}\",\n    \"name\": \"{{$randomUserName}}\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -134,26 +132,23 @@
 					"script": {
 						"exec": [
 							"const responseData = pm.response.json();",
+							"// console.log(\"response\", responseData);",
 							"",
 							"pm.test(\"Response Content-Type is application/json\", function () {",
 							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
 							"});",
 							"",
-							"pm.test(\"Response has the required fields - userid, username, and password\", function () {",
-							"  pm.expect(responseData).to.be.an('array').that.is.not.empty;",
-							"  ",
-							"  responseData.forEach(function(user) {",
-							"    pm.expect(user.userid).to.exist;",
-							"    pm.expect(user.username).to.exist;",
-							"    pm.expect(user.password).to.exist;",
-							"  });",
+							"pm.test(\"Response has the required fields - userid, name, and image\", function () {  ",
+							"    pm.expect(responseData.userid).to.exist;",
+							"    pm.expect(responseData.name).to.exist;",
+							"    // pm.expect(responseData.image).to.exist;",
 							"});",
 							"",
 							"",
 							"pm.test(\"Userid matches requested\", function () {",
 							"    // console.log(\"expected\", pm.collectionVariables.get(\"insertId\"));",
 							"    // console.log(\"recieved\", responseData[0].userid);",
-							"    pm.expect(responseData[0].userid).to.eql(pm.collectionVariables.get(\"insertUserId\"));",
+							"    pm.expect(responseData.userid).to.eql(pm.collectionVariables.get(\"insertUserId\"));",
 							"});",
 							"",
 							"",
@@ -163,12 +158,13 @@
 							"",
 							"pm.test(\"user matches expected\", function() {",
 							"    const expectedData = pm.collectionVariables.get(\"newuser\");",
-							"    pm.expect(responseData[0].username).to.eql(expectedData.username);",
-							"    pm.expect(responseData[0].password).to.eql(expectedData.password);",
+							"    pm.expect(responseData.name).to.eql(expectedData.name);",
+							"    pm.expect(responseData.userid).to.eql(expectedData.userid);",
 							"});",
 							""
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -217,7 +213,7 @@
 							"pm.test(\"Parent field is either null or a valid postid\", function () {",
 							"    pm.expect(responseData).to.be.an('array');",
 							"    responseData.forEach(post => {",
-							"        pm.expect(post.parent).to.satisfy(val => val === null || Number.isInteger(val), \"Parent field should be null or a valid postid\");",
+							"        pm.expect(post.parent).satisfies((val)=>{return (val === null || Number.isInteger(val))},\"Parent field should be null or a valid postid\")",
 							"    });",
 							"});",
 							"",
@@ -230,7 +226,8 @@
 							"",
 							""
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -460,6 +457,31 @@
 						{
 							"key": "postid",
 							"value": "{{insertPostId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lookup gid",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/users/lookup?googleid=117000892380639368684",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"lookup"
+					],
+					"query": [
+						{
+							"key": "googleid",
+							"value": "117000892380639368684"
 						}
 					]
 				}

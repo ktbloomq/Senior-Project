@@ -1,3 +1,4 @@
+import env from "./env.json"
 /// <reference types="cypress" />
 // ***********************************************
 // This example commands.ts shows you how to
@@ -35,3 +36,10 @@
 //     }
 //   }
 // }
+
+Cypress.Commands.add("importSession", () => {
+    cy.session("1", () => {
+        cy.setCookie("next-auth.csrf-token",env["next-auth.csrf-token"]);
+        cy.setCookie("next-auth.session-token",env["next-auth.session-token"]);
+    });
+});
