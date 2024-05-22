@@ -11,6 +11,10 @@ export async function getUserById(userid: number) {
     return execute<User[]>(userQueries.getUserById,[userid]);
 }
 
+export async function getIdFromGoogle(googleid: string) {
+    return execute<any>(userQueries.getIdFromGoogle,[googleid]);
+}
+
 export async function createUser(user: User) {
-    return execute<OkPacket>(userQueries.createUser, [user.id, user.name]);
+    return execute<OkPacket>(userQueries.createUser, [user.googleid, user.name]);
 }

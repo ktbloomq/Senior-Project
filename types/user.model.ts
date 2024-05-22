@@ -1,5 +1,6 @@
 export default interface User {
-    id: number,
+    userid: number,
+    googleid: string|number;
     name: string,
     image: string
 }

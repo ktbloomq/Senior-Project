@@ -1,3 +1,4 @@
+import User from "../../../../../../types/user.model";
 import type { CustomAuthOptions, CustomSession } from "./CustomAuthOptions";
 import Google from "next-auth/providers/google"
 
@@ -11,18 +12,19 @@ export const authOptions:CustomAuthOptions = {
     ],
     callbacks: {
       async session({ session, token}) {
-        let newSession:CustomSession = session
-        newSession.user!.id = token.sub;
+        console.log("session token", token)
+        let newSession:CustomSession = session;
+        newSession.user!.id = token.id;
         return newSession
       },
       async jwt({ token, user }) {
         if (user) {
-          const checkIdResponse = await fetch(`http://${process.env.API_HOST}:5000/api/users/${user.id}`);
+          const checkIdResponse = await fetch(`http://${process.env.API_HOST}:5000/api/users/lookup/?googleid=${user.id}`);
           if(checkIdResponse.status===404) {
             console.log("Creating user", user.id);
-            let userBody = {
-              id: user.id,
-              name: user.name
+            let userBody: Partial<User> = {
+              googleid: user.id,
+              name: user.name!
             }
             const createUserResponse = await fetch(`http://${process.env.API_HOST}:5000/api/users`,{
               method: "POST",
@@ -31,6 +33,10 @@ export const authOptions:CustomAuthOptions = {
               },
               body: JSON.stringify(userBody)
             });
+            let userOKPacket = await createUserResponse.json();
+            token.id = userOKPacket.insertId;
+          } else {
+            token.id = (await checkIdResponse.json()).userid;
           }
         }
         return token;

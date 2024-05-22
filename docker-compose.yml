@@ -10,10 +10,13 @@ services:
         volumes:
             # - ./database/:/docker-entrypoint-initdb.d/
             - db_data:/var/lib/mysql
+        healthcheck:
+            test: ["CMD", "test" ,"-d", "var/lib/mysql/mysql"]
     express:
         image: node:latest
         depends_on:
-            - mysql
+            mysql:
+                condition: service_healthy
         working_dir: /home/node/app/backend
         environment:
             - MY_SQL_DB_HOST=mysql

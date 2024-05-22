@@ -1,6 +1,6 @@
 export const postQueries = {
     getAllposts: 
-        `SELECT p.postid, p.body, p.location, p.image_url, p.likes, p.userid, u.name AS username
+        `SELECT p.postid, p.body, p.parent, p.location, p.image_url, p.likes, p.userid, u.name AS username
         FROM posts AS p LEFT JOIN users AS u ON p.userid = u.userid 
         WHERE parent IS NULL;`,
     getPostById: 'SELECT * FROM posts p WHERE p.postid = ? OR p.parent = ?;',
