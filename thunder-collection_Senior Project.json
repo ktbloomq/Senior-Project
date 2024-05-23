@@ -1,0 +1,454 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "Senior Project",
+    "collectionId": "d23924f0-2a9f-4761-abde-646ebbf7e91f",
+    "dateExported": "2024-05-23T17:49:33.257Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "65d80807-5479-4d8f-8c60-09b1910a3613",
+            "colId": "d23924f0-2a9f-4761-abde-646ebbf7e91f",
+            "containerId": "",
+            "name": "all users",
+            "url": "{{baseUrl}}/api/users/all",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2024-05-23T17:07:18.313Z",
+            "modified": "2024-05-23T17:07:51.813Z",
+            "headers": [],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "const responseData = tc.response.json;",
+                            "",
+                            "tc.test(\"Response Content-Type is application/json\", function () {",
+                            "    expect(tc.response.getHeader(\"Content-Type\")).to.include(\"application/json\");",
+                            "});",
+                            "",
+                            "",
+                            "tc.test(\"Response is an array with at least one element\", function () {",
+                            "  expect(responseData).to.be.an('array').that.is.not.empty;",
+                            "});",
+                            "",
+                            "",
+                            "tc.test(\"Userid is a non-negative integer\", function () {",
+                            "    responseData.forEach(function(user) {",
+                            "        expect(user.userid).to.be.a('number').and.to.be.at.least(0);",
+                            "    });",
+                            "});",
+                            "",
+                            "",
+                            "tc.test(\"Username is a non-empty string\", function () {",
+                            "  expect(responseData).to.be.an('array');",
+                            "  responseData.forEach(function(user) {",
+                            "    expect(user.name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"name should not be empty\");",
+                            "  });",
+                            "});",
+                            "",
+                            "return;",
+                            "",
+                            "tc.test(\"First element in the response array matches the expected data\", function () {",
+                            "    const expectedData = {",
+                            "        \"userid\": 1,",
+                            "        \"username\": \"ttowersey0\",",
+                            "        \"password\": \"oX6|qY(Qs&dRS\"",
+                            "    };",
+                            "    expect(tc.response.json()[0]).to.eql(expectedData);",
+                            "});"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "991a347b-b0e8-4cad-99c3-1612aa525fa3",
+            "colId": "d23924f0-2a9f-4761-abde-646ebbf7e91f",
+            "containerId": "",
+            "name": "user",
+            "url": "{{baseUrl}}/api/users/",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2024-05-23T17:07:18.314Z",
+            "modified": "2024-05-23T17:45:25.589Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"googleid\": \"{{#number}}\",\n    \"name\": \"{{#name}}\"\n}",
+                "form": []
+            },
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "const responseData = tc.response.json;",
+                            "const requestBody = JSON.parse(tc.request.body.raw);",
+                            "console.log(\"request\",requestBody);",
+                            "tc.setVar(\"insertUserId\", responseData.insertId, \"local\");",
+                            "tc.setVar(\"newuser\", requestBody, \"local\");",
+                            "tc.setVar(\"googleid\", requestBody.googleid, \"local\");",
+                            "",
+                            "tc.test(\"Response Content-Type is application/json\", function () {",
+                            "    expect(tc.response.getHeader(\"Content-Type\")).to.include(\"application/json\");",
+                            "});",
+                            "",
+                            "tc.test(\"affected 1 row\", function () {",
+                            "    expect(responseData.affectedRows).to.eql(1);",
+                            "});"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "7f8d142f-292c-467d-a530-d46412cc9793",
+            "colId": "d23924f0-2a9f-4761-abde-646ebbf7e91f",
+            "containerId": "",
+            "name": "user by id",
+            "url": "{{baseUrl}}/api/users/{userid}",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2024-05-23T17:07:18.315Z",
+            "modified": "2024-05-23T17:28:41.629Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "userid",
+                    "value": "{{insertUserId}}",
+                    "isPath": true
+                }
+            ],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "const responseData = tc.response.json;",
+                            "",
+                            "tc.test(\"Response Content-Type is application/json\", function () {",
+                            "    expect(tc.response.getHeader(\"Content-Type\")).to.include(\"application/json\");",
+                            "});",
+                            "",
+                            "tc.test(\"Response has the required fields - userid, name, and image\", function () {  ",
+                            "    expect(responseData.userid).to.exist;",
+                            "    expect(responseData.name).to.exist;",
+                            "    // expect(responseData.image).to.exist;",
+                            "});",
+                            "",
+                            "",
+                            "tc.test(\"Userid matches requested\", function () {",
+                            "    let expectedid = parseInt(tc.getVar(\"insertUserId\"));",
+                            "    expect(responseData.userid).to.eql(expectedid);",
+                            "});",
+                            "",
+                            "",
+                            "tc.test(\"Response time is less than 200ms\", function () {",
+                            "  expect(tc.response.time).to.be.below(200);",
+                            "});",
+                            "",
+                            "tc.test(\"user matches expected\", function() {",
+                            "    const expectedData = JSON.parse(tc.getVar(\"newuser\"));",
+                            "    expect(responseData.name).to.eql(expectedData.name);",
+                            "});",
+                            ""
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "3b655030-097e-46bd-914c-91b8d663b6df",
+            "colId": "d23924f0-2a9f-4761-abde-646ebbf7e91f",
+            "containerId": "",
+            "name": "all posts",
+            "url": "{{baseUrl}}/api/posts/all",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2024-05-23T17:07:18.316Z",
+            "modified": "2024-05-23T17:28:56.486Z",
+            "headers": [],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "const responseData = tc.response.json;",
+                            "",
+                            "tc.test(\"Response status code is 200\", function () {",
+                            "    expect(tc.response.status).to.equal(200);",
+                            "});",
+                            "",
+                            "",
+                            "tc.test(\"Response Content-Type is application/json\", function () {",
+                            "  expect(tc.response.getHeader(\"Content-Type\")).to.include(\"application/json\");",
+                            "});",
+                            "",
+                            "",
+                            "tc.test(\"Parent field is either null or a valid postid\", function () {",
+                            "    expect(responseData).to.be.an('array');",
+                            "    responseData.forEach(post => {",
+                            "        expect(post.parent).satisfies((val)=>{return (val === null || Number.isInteger(val))},\"Parent field should be null or a valid postid\")",
+                            "    });",
+                            "});",
+                            "",
+                            "",
+                            "tc.test(\"Likes field is a non-negative integer\", function () {",
+                            "  responseData.forEach(function(post) {",
+                            "    expect(post.likes).to.be.a('number').and.to.be.at.least(0);",
+                            "  });",
+                            "});",
+                            "",
+                            ""
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "1aaea234-78e7-455c-bca8-3f0a99d267a4",
+            "colId": "d23924f0-2a9f-4761-abde-646ebbf7e91f",
+            "containerId": "",
+            "name": "post",
+            "url": "{{baseUrl}}/api/posts/",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2024-05-23T17:07:18.317Z",
+            "modified": "2024-05-23T17:36:39.029Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"userid\": 1,\n    \"body\": \"{{body}}\",\n    \"location\": \"{{location}}\",\n    \"image_url\": \"{{imageUrl}}\"\n}",
+                "form": []
+            },
+            "preReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "const { faker } = await tc.loadModule(\"@faker-js/faker\");",
+                            "tc.setVar(\"body\", faker.lorem.lines(),\"local\");",
+                            "tc.setVar(\"location\", faker.location.city(),\"local\");",
+                            "tc.setVar(\"imageUrl\", faker.image.url(),\"local\");"
+                        ]
+                    }
+                ]
+            },
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "const responseData = tc.response.json;",
+                            "const requestBody = JSON.parse(tc.request.body.raw);",
+                            "console.log(requestBody);",
+                            "tc.setVar(\"insertPostId\", responseData.insertId, \"local\");",
+                            "tc.setVar(\"newPost\", requestBody,\"local\");",
+                            "",
+                            "tc.test(\"Response Content-Type is application/json\", function () {",
+                            "    expect(tc.response.getHeader(\"Content-Type\")).to.include(\"application/json\");",
+                            "});",
+                            "",
+                            "tc.test(\"affected 1 row\", function () {",
+                            "    expect(responseData.affectedRows).to.eql(1);",
+                            "});"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "0f517285-96ef-449c-86d2-5ce65ef0efdc",
+            "colId": "d23924f0-2a9f-4761-abde-646ebbf7e91f",
+            "containerId": "",
+            "name": "post by id",
+            "url": "{{baseUrl}}/api/posts/{postid}",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2024-05-23T17:07:18.318Z",
+            "modified": "2024-05-23T17:41:21.278Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "postid",
+                    "value": "{{insertPostId}}",
+                    "isPath": true
+                }
+            ],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "const responseData = tc.response.json;",
+                            "",
+                            "tc.test(\"Response status code is 200\", function () {",
+                            "    expect(tc.response.status).to.equal(200);",
+                            "});",
+                            "",
+                            "",
+                            "tc.test(\"Response Content-Type is application/json\", function () {",
+                            "  expect(tc.response.getHeader(\"Content-Type\")).to.include(\"application/json\");",
+                            "});",
+                            "",
+                            "tc.test(\"Postid matches requested\", function () {",
+                            "    // console.log(\"expected\", pm.collectionVariables.get(\"insertId\"));",
+                            "    // console.log(\"recieved\", responseData[0].userid);",
+                            "    expect(responseData[0].postid).to.eql(parseInt(tc.getVar(\"insertPostId\")));",
+                            "});",
+                            "",
+                            "tc.test(\"post matches expected\", function() {",
+                            "    const expectedData = JSON.parse(tc.getVar(\"newPost\"));",
+                            "    expect(responseData[0].userid).to.eql(expectedData.userid);",
+                            "    expect(responseData[0].body).to.eql(expectedData.body);",
+                            "    expect(responseData[0].location).to.eql(expectedData.location);",
+                            "    expect(responseData[0].image_url).to.eql(expectedData.image_url);",
+                            "    expect(responseData[0].likes).to.eql(0);",
+                            "});",
+                            ""
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "13f6863f-4d02-4231-8178-b84d2951b03b",
+            "colId": "d23924f0-2a9f-4761-abde-646ebbf7e91f",
+            "containerId": "",
+            "name": "like post",
+            "url": "{{baseUrl}}/api/posts/like/{postid}",
+            "method": "GET",
+            "sortNum": 70000,
+            "created": "2024-05-23T17:07:18.319Z",
+            "modified": "2024-05-23T17:41:31.958Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "postid",
+                    "value": "{{insertPostId}}",
+                    "isPath": true
+                }
+            ],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "const responseData = tc.response.json;",
+                            "",
+                            "tc.test(\"changed 1 row\", function() {",
+                            "    expect(responseData.affectedRows).to.eql(1);",
+                            "    expect(responseData.changedRows).to.eql(1);",
+                            "});"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "158d2229-7da7-4795-b7ab-121dd1b346f5",
+            "colId": "d23924f0-2a9f-4761-abde-646ebbf7e91f",
+            "containerId": "",
+            "name": "check like increment",
+            "url": "{{baseUrl}}/api/posts/{postid}",
+            "method": "GET",
+            "sortNum": 80000,
+            "created": "2024-05-23T17:07:18.320Z",
+            "modified": "2024-05-23T17:42:44.432Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "postid",
+                    "value": "{{insertPostId}}",
+                    "isPath": true
+                }
+            ],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "const responseData = tc.response.json;",
+                            "",
+                            "tc.test(\"Response status code is 200\", function () {",
+                            "    expect(tc.response.status).to.equal(200);",
+                            "});",
+                            "",
+                            "",
+                            "tc.test(\"Response Content-Type is application/json\", function () {",
+                            "  expect(tc.response.getHeader(\"Content-Type\")).to.include(\"application/json\");",
+                            "});",
+                            "",
+                            "tc.test(\"Postid matches requested\", function () {",
+                            "    // console.log(\"expected\", pm.collectionVariables.get(\"insertId\"));",
+                            "    // console.log(\"recieved\", responseData[0].userid);",
+                            "    expect(responseData[0].postid).to.eql(parseInt(tc.getVar(\"insertPostId\")));",
+                            "});",
+                            "",
+                            "tc.test(\"post matches expected\", function() {",
+                            "    const expectedData = JSON.parse(tc.getVar(\"newPost\"));",
+                            "    expect(responseData[0].userid).to.eql(expectedData.userid);",
+                            "    expect(responseData[0].body).to.eql(expectedData.body);",
+                            "    expect(responseData[0].location).to.eql(expectedData.location);",
+                            "    expect(responseData[0].image_url).to.eql(expectedData.image_url);",
+                            "    expect(responseData[0].likes).to.eql(1);",
+                            "});",
+                            ""
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "caab8ff0-48a0-4d61-807c-ffa1d083780d",
+            "colId": "d23924f0-2a9f-4761-abde-646ebbf7e91f",
+            "containerId": "",
+            "name": "lookup gid",
+            "url": "{{baseUrl}}/api/users/lookup?googleid={{googleid}}",
+            "method": "GET",
+            "sortNum": 90000,
+            "created": "2024-05-23T17:07:18.321Z",
+            "modified": "2024-05-23T17:48:15.635Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "googleid",
+                    "value": "{{googleid}}",
+                    "isPath": false
+                }
+            ],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "const body = tc.response.json;",
+                            "const masterid = parseInt(tc.getVar(\"insertUserId\"));",
+                            "",
+                            "tc.test(\"googleid exists\", function() {",
+                            "    expect(tc.response.status).to.equal(200);",
+                            "});",
+                            "",
+                            "tc.test(\"requested id matches masterid\", function() {",
+                            "    expect(body.userid).to.equal(masterid);",
+                            "})"
+                        ]
+                    }
+                ]
+            }
+        }
+    ],
+    "settings": {
+        "preReq": {
+            "inlineScripts": [
+                {
+                    "script": [
+                        ""
+                    ]
+                }
+            ]
+        },
+        "postReq": {
+            "inlineScripts": [
+                {
+                    "script": [
+                        ""
+                    ]
+                }
+            ]
+        }
+    },
+    "ref": "E798I3FhEa7j2KzzwyT7YiLFZdteCxMo6I-J4iT5Wepc71h6dJUG0IVho9p2EJe78j4azps5uO_2bq_HOzeV0A"
+}

@@ -1,4 +1,20 @@
 import { faker } from '@faker-js/faker';
+import { Session } from 'inspector';
+
+describe('Authentication',() => {
+  it("must be logged in", () => {
+    cy.session("unauthenticated", () => {
+      cy.visit('http://localhost:3000/post');
+      cy.url().should("not.be.equal","http://localhost:3000/post");
+    });
+  });
+
+  it("authentic users can enter", () => {
+    cy.importSession();
+    cy.visit('http://localhost:3000/post');
+    cy.url().should("be.equal","http://localhost:3000/post");
+  })
+});
 
 describe('Navigation', () => {
   beforeEach(() => {
@@ -11,13 +27,10 @@ describe('Navigation', () => {
     // Start from the index page
     cy.visit('http://localhost:3000/');
  
-    // Find a link with an href attribute containing "about" and click it
     cy.get('a[href*="/post"]').click();
  
-    // The new url should include "/about"
     cy.url().should('include', '/post');
  
-    // The new page should contain an h1 with "About"
     cy.get('h1').contains('Create Post');
     cy.get('input[name=location]').type(location);
     cy.get('input[name=image_url]').type(image);

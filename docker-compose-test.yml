@@ -1,0 +1,46 @@
+services:
+    mysql:
+        image: mariadb:latest
+        environment:
+            MARIADB_ROOT_PASSWORD: :B>ta!RY^2S<ew%.hq^mk#Df?6ew>qrT
+        expose:
+            - "3306"
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./database/:/docker-entrypoint-initdb.d/
+        healthcheck:
+            test: ["CMD", "test" ,"-d", "var/lib/mysql/mysql"]
+    express:
+        image: node:latest
+        depends_on:
+            mysql:
+                condition: service_healthy
+        working_dir: /home/node/app/backend
+        environment:
+            - MY_SQL_DB_HOST=mysql
+        volumes:
+            - ./backend:/home/node/app/backend
+            - ./types:/home/node/app/types
+        expose:
+            - "5000"
+        ports:
+            - "5000:5000"
+        command: "npm run dev"
+    next:
+        image: node:latest
+        depends_on:
+            - express
+        working_dir: /home/node/app/frontend
+        environment:
+            - API_HOST=express
+        volumes:
+            - ./frontend:/home/node/app/frontend
+            - ./types:/home/node/app/types
+        expose:
+            - "3000"
+        ports:
+            - "3000:3000"
+        command: "npm run dev"
+volumes:
+    db_data:
