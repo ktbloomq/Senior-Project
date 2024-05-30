@@ -24,6 +24,8 @@ services:
             - MY_SQL_DB_HOST=mysql
         expose:
             - "5000"
+        ports:
+            - "5000:5000"
         command: "npm run dev"
     next:
         image: ktbloomq/senior-project-frontend:1.0
