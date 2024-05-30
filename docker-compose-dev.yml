@@ -8,9 +8,10 @@ services:
         ports:
             - "3306:3306"
         volumes:
-            - ./database/:/docker-entrypoint-initdb.d/
+            # - ./database/:/docker-entrypoint-initdb.d/
+            - db_data:/var/lib/mysql
         healthcheck:
-            test: ["CMD", "test" ,"-d", "var/lib/mysql/mysql"]
+            test: ["CMD", "test" ,"-d", "var/lib/mysql"]
     express:
         image: ktbloomq/senior-project-backend:1.0
         build:

@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./src",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "plugins": [
+            {
+                "transform": "typescript-transform-paths"
+            },
+            {
+                "transform": "typescript-transform-paths",
+                "afterDeclarations": true
+            }
+        ],
+        "paths": {
+            "@/*": ["*"],
+          }
+    },
+    "include": [
+        "**/*.ts",
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

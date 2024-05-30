@@ -1,4 +1,4 @@
-import User from "../../../../../../types/user.model";
+import type User from "@/types/user.model";
 import type { CustomAuthOptions, CustomSession } from "./CustomAuthOptions";
 import Google from "next-auth/providers/google"
 
@@ -12,7 +12,6 @@ export const authOptions:CustomAuthOptions = {
     ],
     callbacks: {
       async session({ session, token}) {
-        console.log("session token", token)
         let newSession:CustomSession = session;
         newSession.user!.id = token.id;
         return newSession

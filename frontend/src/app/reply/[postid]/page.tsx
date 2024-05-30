@@ -1,4 +1,4 @@
-import Post from "../../../../../types/post.model";
+import Post from "@/types/post.model";
 import PostComponent from "../../postComponent";
 import Reply from "./reply"
 

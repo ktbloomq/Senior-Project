@@ -1,6 +1,6 @@
 import { execute } from "../services/mysql.connector";
 import { postQueries } from "./post.queries";
-import Post from "../../../types/post.model";
+import Post from "@/types/post.model";
 import { OkPacket } from "mysql";
 
 export async function getAllPosts() {

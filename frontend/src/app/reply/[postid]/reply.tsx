@@ -1,5 +1,5 @@
 "use client"
-import Post from "../../../../../types/post.model";
+import Post from "@/types/post.model";
 import likePost from "../../likePost";
 
 export default function Reply({post}: {post:Post}) {

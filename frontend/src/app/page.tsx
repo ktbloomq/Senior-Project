@@ -1,5 +1,5 @@
 import PostComponent from "./postComponent";
-import Post from "../../../types/post.model";
+import Post from "@/types/post.model";
 
 async function getPosts() {
   let data;

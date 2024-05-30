@@ -1,6 +1,6 @@
 'use server'
 import { redirect } from "next/navigation";
-import Post from "../../../../types/post.model";
+import Post from "@/types/post.model";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/options";
 import type { CustomSession } from "../api/auth/[...nextauth]/CustomAuthOptions";

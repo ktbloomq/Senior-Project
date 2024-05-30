@@ -1,6 +1,5 @@
 "use client";
 import { redirect } from "next/navigation";
-// import Post from "../../../../types/post.model";
 import { getSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import createPost from "./createPost";
