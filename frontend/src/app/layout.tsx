@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]/options';
-import Titlebar from './titlebarAuthenticated';
+import Titlebar from './titlebar';
 
 export default async function RootLayout({
   children,
