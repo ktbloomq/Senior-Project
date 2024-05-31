@@ -5,7 +5,7 @@ This repository represents my senior project at Grand Canyon University. It is a
 ## Frontend
 ![frontend homepage](images/homepage.png)
 
-The frontend of this application uses the Nextjs framework, using bootstrapt for styling. The homepage is a feed of all posts. User authentication is done with the NextAuth library. It uses Google OAuth to verify and register users. The frontend interacts with a backend API to interact with the database. It is architected in such a way that all API requests are handled by the server. This way, the API can be protected by a firewall, and obscured from the user. 
+The frontend of this application uses the Nextjs framework, using bootstrap for styling. The homepage is a feed of all posts. From here, the user can interact with posts, and create their own. User authentication is done with the NextAuth library. It uses Google OAuth to verify and register users. The frontend interacts with a backend API to interact with the database. It is architected in such a way that all API requests are handled by the server. This way, the API can be protected by a firewall, and obscured from the user. 
 ### Environment Variables
 - API_HOST - API URL
 - GOOGLE_CLIENT_ID - Google OAuth clientid

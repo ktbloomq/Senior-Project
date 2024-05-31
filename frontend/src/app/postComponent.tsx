@@ -2,7 +2,7 @@
 import Post from "@/types/post.model";
 import likePost from "./likePost";
 
-export default function PostComponent({post}: {post:Post}) {
+export default function PostComponent({post, isAuthenticated}: {post:Post, isAuthenticated:boolean}) {
     // const dummyImage = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
     return (
         <div className="card mb-2">
@@ -18,9 +18,10 @@ export default function PostComponent({post}: {post:Post}) {
                 <p className="card-text">{post.body}</p>
                 <div className="text-end">
                     <a href={`/reply/${post.postid}`} className="btn btn-outline-primary me-1">Reply</a>
-                    <button onClick={() => likePost(post.postid)} className="btn btn-outline-primary">
-                        {post.likes} 👍
-                    </button>
+                    {isAuthenticated ? 
+                        <button onClick={() => likePost(post.postid)} className="btn btn-outline-primary">{post.likes} 👍</button>:
+                        <button className="btn btn-outline-primary" disabled>{post.likes} 👍</button>
+                    }
                 </div>
             </div>
         </div>

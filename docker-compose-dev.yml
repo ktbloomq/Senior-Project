@@ -11,35 +11,37 @@ services:
             # - ./database/:/docker-entrypoint-initdb.d/
             - db_data:/var/lib/mysql
         healthcheck:
-            test: ["CMD", "test" ,"-d", "var/lib/mysql"]
+            test: ["CMD", "test" ,"-d", "var/lib/mysql/mysql"]
     express:
-        image: ktbloomq/senior-project-backend:1.0
-        build:
-            context: .
-            dockerfile: backend/dockerfile
+        image: node:latest
         depends_on:
             mysql:
                 condition: service_healthy
+        working_dir: /home/node/app/backend
         environment:
             - MY_SQL_DB_HOST=mysql
+        volumes:
+            - ./backend:/home/node/app/backend
+            - ./types:/home/node/app/backend/src/types
         expose:
             - "5000"
         ports:
             - "5000:5000"
         command: "npm run dev"
     next:
-        image: ktbloomq/senior-project-frontend:1.0
-        build:
-            context: .
-            dockerfile: frontend/dockerfile
+        image: node:latest
         depends_on:
             - express
+        working_dir: /home/node/app/frontend
         environment:
             - API_HOST=express
+        volumes:
+            - ./frontend:/home/node/app/frontend
+            - ./types:/home/node/app/frontend/src/types
         expose:
             - "3000"
         ports:
-            - "80:3000"
+            - "3000:3000"
         command: "npm run dev"
 volumes:
     db_data:
