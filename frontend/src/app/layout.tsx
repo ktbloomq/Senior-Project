@@ -10,7 +10,7 @@ export default async function RootLayout({
 }>) {
   const session = await getServerSession(authOptions);
   return (
-    <html lang="en">
+    <html lang="en" data-bs-theme="dark">
       <body>
         <main>
           <Titlebar isAuthenticated={session!==null} />

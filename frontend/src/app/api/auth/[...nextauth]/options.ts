@@ -10,6 +10,9 @@ export const authOptions:CustomAuthOptions = {
           clientSecret: process.env.GOOGLE_CLIENT_SECRET!
       })
     ],
+    theme: {
+      colorScheme: "dark"
+    },
     callbacks: {
       async session({ session, token}) {
         let newSession:CustomSession = session;
