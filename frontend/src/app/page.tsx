@@ -23,7 +23,7 @@ export default async function Home() {
       <hr />
       <main>
         {posts.map((p: Post,index) => {
-          return <PostComponent key={index} post={p} isAuthenticated={false} />
+          return <PostComponent key={index} post={p} isAuthenticated={session!=null} />
         })}
       </main>
     </>
