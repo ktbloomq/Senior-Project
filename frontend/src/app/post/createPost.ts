@@ -7,21 +7,15 @@ import type { CustomSession } from "@/app/api/auth/[...nextauth]/CustomAuthOptio
 
 export default async function createPost(formData: FormData) {
     const session:CustomSession|null = await getServerSession(authOptions);
-    let newPost = {
-        userid: session!.user!.id,
-        location: formData.get("location"),
-        image_url: formData.get("image_url"),
-        body: formData.get("body"),
-        parent: formData.get("parent"),
-    } as Post;
-
-    console.log("to post", newPost);
+    let postForm:FormData = formData;
+    postForm.append("userid",session!.user!.id);
+    
     const response = await fetch(`http://${process.env.API_HOST}:5000/api/posts`,{
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
+            enctype:"multipart/form-data"
         },
-        body: JSON.stringify(newPost)
+        body: postForm
     });
     const data = await response.json();
     console.log("post response", data);
