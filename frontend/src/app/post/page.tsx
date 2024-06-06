@@ -3,11 +3,14 @@ import { useState } from "react";
 import createPost from "./createPost";
 
 
-
 export default function Post() {
     const dummyImage = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
     const [previewImg, setPreviewImg] = useState("data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=");
     
+    function updatePreview(file:File) {
+        setPreviewImg(URL.createObjectURL(file));
+    };
+
     return(
         <>
             <h1 className="text-center">Create Post</h1>
@@ -25,7 +28,7 @@ export default function Post() {
                         <div className="">
                             <label htmlFor="imageLink" className="form-label">Image</label>
                             <input id="imageLink" type="file" name="image" accept="image/*" className="form-control" 
-                            required/>
+                            onChange={(e) => {updatePreview(e.target.files![0])}} required/>
                         </div>
                         <div className="">
                             <label htmlFor="description" className="form-label">Description</label>
