@@ -9,11 +9,13 @@ import { initializeMySqlConnector } from './services/mysql.connector';
 dotenv.config();
 const app: express.Application = express();
 const port = process.env.PORT;
+initializeMySqlConnector();
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cors());
-app.use(helmet());
-initializeMySqlConnector();
+app.use(helmet({
+    crossOriginResourcePolicy: false,
+}));
 
 // Routers
 app.use('/api/users',userRouter);

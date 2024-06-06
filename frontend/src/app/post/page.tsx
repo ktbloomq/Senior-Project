@@ -24,8 +24,8 @@ export default function Post() {
                         </div>
                         <div className="">
                             <label htmlFor="imageLink" className="form-label">Image</label>
-                            <input id="imageLink" type="text" name="image_url" className="form-control" 
-                            onChange={ (e) => {setPreviewImg((e.target as HTMLInputElement).value)}} required/>
+                            <input id="imageLink" type="file" name="image" accept="image/*" className="form-control" 
+                            required/>
                         </div>
                         <div className="">
                             <label htmlFor="description" className="form-label">Description</label>

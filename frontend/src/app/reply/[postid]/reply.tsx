@@ -1,6 +1,6 @@
 "use client"
 import Post from "@/types/post.model";
-import likePost from "../../likePost";
+import likePost from "../../(postComponent)/likePost";
 
 export default function Reply({post}: {post:Post}) {
     // const dummyImage = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";

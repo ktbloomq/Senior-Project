@@ -1,5 +1,5 @@
 import type Post from "@/types/post.model";
-import PostComponent from "../../postComponent";
+import PostComponent from "../../(postComponent)/postComponent";
 import Reply from "./reply"
 import createPost from "@/app/post/createPost";
 
