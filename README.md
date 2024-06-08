@@ -1,7 +1,28 @@
 # GCU Senior Project
 This repository represents my senior project at Grand Canyon University. It is a mock social media platform intended for sharing travel journals.
 ## Usage
+### Pre installation
+Before the application is booted, the following environment files /us be configured:
+- backend/.env
+- frontend/.env.local
+
+Additionally, the MySQL database and tables must be deployed. this can be done using the following SQL script: `database/0database.sql`
+### Installation with Docker
 `docker compose up`
+
+### Manual installation
+#### Backend
+```
+cd backend
+npm start
+```
+#### Frontend
+```
+cd frontend
+npm run build
+npm start
+```
+
 ## Frontend
 ![frontend homepage](images/homepage.png)
 
